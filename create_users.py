@@ -41,6 +41,18 @@ def create_contact_method(headers, user_id, payload):
     return r.json()['contact_method']['id']
 
 
+def create_notification_rule(headers, user_id, payload):
+    """Creates notification rule of user. Returns nothing."""
+
+    # Alter base_url's endpoint
+    url = base_url + '/' + user_id + '/notification_rules'
+
+    r = requests.post(url, headers=headers, data=json.dumps(payload))
+
+    print 'Notification rule response code: ' + str(r.status_code)
+    return
+
+
 def process_csv(headers, email):
 
     # Parse csv
@@ -50,6 +62,7 @@ def process_csv(headers, email):
     for row in reader:
         print 'Creating user: ' + row['name']
 
+        # Add User
         user = {
             'name': row['name'],
             'email': row['email'],
@@ -60,6 +73,7 @@ def process_csv(headers, email):
         r = create_user(headers, email, user)
         user_id = r['id']
 
+        # Add contact method
         if row['type'] == 'phone':
             contact_method = {
                 'contact_method': {
@@ -78,17 +92,21 @@ def process_csv(headers, email):
                     }
                 }
 
-
         contact_method_id = create_contact_method(headers, user_id, contact_method)
 
+        # Add notification rule
         notification_rule = {
             'notification_rule': {
-                
+                'type': 'assignment_notification_rule',
+                'start_delay_in_minutes': 0,
+                'contact_method': {
+                    'id': contact_method_id,  # optional
+                    'type': contact_method['contact_method']['type']
+                    }
+                }
             }
-        }
 
-
-
+        create_notification_rule(headers, user_id, notification_rule)
 
 
 if __name__ == '__main__':
