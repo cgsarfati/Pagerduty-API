@@ -67,7 +67,7 @@ def process_csv(headers, email):
             'name': row['name'],
             'email': row['email'],
             'role': row['role'],
-            'type': 'user',  # optional
+            'type': 'user'  # optional
             }
 
         r = create_user(headers, email, user)
