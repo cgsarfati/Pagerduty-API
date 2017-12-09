@@ -13,6 +13,21 @@ import json
 import csv
 import sys
 
+base_url = 'https://api.pagerduty.com/users'
+
+
+def create_user(headers, email, payload):
+
+    # Add admin's email, NOT the user being added
+    headers['From'] = email
+
+    # Data is user info
+    r = requests.post(base_url, headers=headers, data=json.dumps(payload))
+
+    print 'User creation response code: ' + str(r.status_code)
+
+    return r.json()['user']
+
 
 def process_csv(headers, email):
 
