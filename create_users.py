@@ -59,10 +59,7 @@ def process_csv(headers, email):
     reader = csv.DictReader(open('users.csv'), fieldnames=('name', 'email', 'role', 'address', 'type'))
     reader.next()
 
-    print "hello"
-
     for row in reader:
-        print "hi"
         print 'Creating user: ' + row['name']
 
         # Add User
