@@ -59,7 +59,10 @@ def process_csv(headers, email):
     reader = csv.DictReader(open('users.csv'), fieldnames=('name', 'email', 'role', 'address', 'type'))
     reader.next()
 
+    print "hello"
+
     for row in reader:
+        print "hi"
         print 'Creating user: ' + row['name']
 
         # Add User
@@ -111,6 +114,7 @@ def process_csv(headers, email):
 
 if __name__ == '__main__':
 
+    # HTTP Request Headers
     headers = {
         'Authorization': 'Token token=' + sys.argv[1],  # api key
         'Content-type': 'application/json',
